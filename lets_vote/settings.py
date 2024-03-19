@@ -71,6 +71,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'lets_vote.wsgi.application'
 
+# settings.py
+
+# Base directory for media files
+MEDIA_ROOT = BASE_DIR / 'media'
+# URL path for media files
+MEDIA_URL = '/media/'
+
+
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
