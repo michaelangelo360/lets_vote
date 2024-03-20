@@ -1,0 +1,36 @@
+# Byte-compiled / optimized / DLL files
+*.pyc
+*.pyo
+__pycache__/
+*.so
+*.dll
+
+.sqlite3
+
+media/
+# Caches
+*.cache/
+.cache/
+# Directories
+logs/
+node_modules/
+.env
+
+# Distribution / packaging
+*.egg-info/
+dist/
+build/
+
+# Visual Studio Code specific files
+.vscode/
+
+# PyCharm specific files
+.idea/
+*.iml
+
+# macOS specific files
+.DS_Store
+
+# Ignore the virtual environment directory
+vm/
+migrations/
