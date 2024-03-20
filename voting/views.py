@@ -1,12 +1,25 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from rest_framework import viewsets
+from rest_framework.generics import ListAPIView
 from .models import Candidate , Category, Event , Nominee
-from .serializers import CandidateSerializer , CategorySerializer, NomineeSerializer
+from .serializers import CandidateSerializer , CategorySerializer, NomineeSerializer , EventSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
 # Create your views here.
+class CandidateViewSet(viewsets.ModelViewSet):
+    queryset = Candidate.objects.all()
+    serializer_class = CandidateSerializer
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+class NomineeViewSet(viewsets.ModelViewSet):
+    queryset = Nominee.objects.all()
+    serializer_class = NomineeSerializer
 
 @api_view(['GET','POST'])
 #@parser_classes([MultiPartParser, FormParser])
@@ -59,19 +72,37 @@ def all_nominees(request) :
             serializer.save()
             return Response (serializer.data, status= status.HTTP_201_CREATED)
 
-def all_candidates (request):
 
-    if request.method =='GET':
+def all_events(request):
+    if request.method == 'GET':
+ 
+     
+        events = Events.objects.all()
+        serializer = EventSerializer (events, many= True , context = {'request': request})
+        return JsonResponse (serializer.data , safe = False)
 
-        Candidates = Candidate.objects.all()
-        serializer = CandidateSerializer (Candidates , many =True , context ={'request':request} )
-        return JsonResponse (serializer.date , safe = False)
+    if request.method =='POST':
+        serializer = EventSerializer( data = request.data)
+        if serializer.is_valid ():
+            serializer.save()
+            return Response(serializer.data, status= status.HTTP_201_CREATED)
 
-    if request.method == 'POST':
-        serializer = CandidateSerializer(data = request.data)
-        if serializer.is_valid():
-            return Response (serializer.data, status = status.HTTP_201_CREATED)
+# def all_candidates (request):
+
+#     if request.method =='GET':
+
+#         Candidates = Candidate.objects.all()
+#         serializer = CandidateSerializer (Candidates , many =True , context ={'request':request} )
+#         return JsonResponse (serializer.date , safe = False)
+
+#     if request.method == 'POST':
+#         serializer = CandidateSerializer(data = request.data)
+#         if serializer.is_valid():
+#             return Response (serializer.data, status = status.HTTP_201_CREATED)
     
+
+
+
 
 def cast_vote(request, candidate_id):
     # This view assumes you're receiving the candidate's ID for whom the vote is cast.
